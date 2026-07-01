@@ -1,0 +1,780 @@
+name: Bootstrap and Build ClickMod
+
+  on:
+    workflow_dispatch:
+    push:
+      branches: [ main, master ]
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Set up Java 17
+          uses: actions/setup-java@v4
+          with:
+            java-version: '17'
+            distribution: 'temurin'
+  
+        - name: Create README.md
+          run: |
+            mkdir -p "."
+            echo "IyBDbGlja01vZCDigJQgQ3VzdG9tIENsaWNrIFNvdW5kICsgVW5pdmVyc2FsIFZvbHVtZSBBbXBsaWZp\
+          ZXIKIyMjIE1pbmVjcmFmdCAxLjIwLjEgwrcgRm9yZ2UgNDcuMi54IMK3IENsaWVudC1zaWRlIG9ubHkK\
+          Ci0tLQoKIyMgRmVhdHVyZXMKCnwgRmVhdHVyZSB8IERldGFpbHMgfAp8LS0tLS0tLS0tfC0tLS0tLS0t\
+          LXwKfCAqKkN1c3RvbSBsZWZ0LWNsaWNrIHNvdW5kKiogfCBZb3VyIHByb3ZpZGVkIGNsaWNrIHBsYXlz\
+          IG9uIGV2ZXJ5IGF0dGFjayAoYmxvY2ssIGVudGl0eSwgYWlyKSB8CnwgKipDdXN0b20gcmlnaHQtY2xp\
+          Y2sgc291bmQqKiB8IFNhbWUgY2xpY2sgb24gZXZlcnkgdXNlL2ludGVyYWN0L3BsYWNlIGFjdGlvbiB8\
+          CnwgKipVbml2ZXJzYWwgYW1wbGlmaWVyKiogfCBCb29zdHMgQUxMIGF1ZGlvIGF0IHRoZSBPcGVuQUwg\
+          Z2FpbiBsZXZlbCDigJQgdmFuaWxsYSwgbW9kcywgbXVzaWMsIFVJLCBtb2JzLCB3ZWF0aGVyIHwKfCAq\
+          KjDigJMxMDAwJSBzbGlkZXIqKiB8IERyYWdnYWJsZSBIVUQgb3ZlcmxheTsgdXBkYXRlcyBpbiByZWFs\
+          LXRpbWUsIG5vIHJlc3RhcnQgbmVlZGVkIHwKfCAqKkRyYWdnYWJsZSBIVUQqKiB8IFRpdGxlLWJhciBk\
+          cmFnLCBwb3NpdGlvbiBzYXZlZCB0byBjb25maWcgfAp8ICoqVG9nZ2xlIGtleWJpbmQqKiB8IERlZmF1\
+          bHQgYFZgIOKAlCB0b2dnbGVhYmxlIGluIENvbnRyb2xzIHNldHRpbmdzIHwKfCAqKlBlcnNpc3RlbnQg\
+          Y29uZmlnKiogfCBBbGwgc2V0dGluZ3Mgc2F2ZWQgdG8gYGNvbmZpZy9jbGlja21vZC1jbGllbnQudG9t\
+          bGAgfAp8ICoqTXVsdGlwbGF5ZXItc2FmZSoqIHwgQ2xpZW50LXNpZGUgb25seSwgbm8gc2VydmVyIHBh\
+          Y2tldHMgfAoKLS0tCgojIyBCdWlsZGluZwoKIyMjIFJlcXVpcmVtZW50cwotICoqSkRLIDE3KiogKGV4\
+          YWN0bHkg4oCUIEZvcmdlIDQ3LnggcmVxdWlyZXMgSmF2YSAxNykKLSAqKkdyYWRsZSA4LngqKiAodmlh\
+          IHdyYXBwZXIg4oCUIHJ1biBgZ3JhZGxld2AgLyBgZ3JhZGxldy5iYXRgKQotIEludGVybmV0IGFjY2Vz\
+          cyBvbiBmaXJzdCBidWlsZCAoR3JhZGxlIGRvd25sb2FkcyBGb3JnZSwgTUNQLCBkZXBlbmRlbmNpZXMp\
+          CgojIyMgRmlyc3QtdGltZSBzZXR1cCAoSW50ZWxsaUogSURFQSkKCmBgYGJhc2gKIyAxLiBEb3dubG9h\
+          ZCB0aGUgR3JhZGxlIHdyYXBwZXIgSkFSIChyZXF1aXJlZCBvbmNlKQouL2dyYWRsZXcgd3JhcHBlciAt\
+          LWdyYWRsZS12ZXJzaW9uPTguMS4xCgojIDIuIEdlbmVyYXRlIEZvcmdlIHJ1biBjb25maWdzICsgZGVj\
+          b21waWxlIE1DIHNvdXJjZXMKLi9ncmFkbGV3IGdlbkludGVsbGlqUnVucwoKIyAzLiBPcGVuIHRoZSBm\
+          b2xkZXIgYXMgYSBHcmFkbGUgcHJvamVjdCBpbiBJbnRlbGxpSgojICAgIEZpbGUg4oaSIE9wZW4g4oaS\
+          IHNlbGVjdCB0aGUgY2xpY2ttb2QvIGZvbGRlcgpgYGAKClRoZW4gcnVuIHRoZSAqKk1pbmVjcmFmdCBD\
+          bGllbnQqKiBydW4gY29uZmlnIGZyb20gSW50ZWxsaUouCgojIyMgRWNsaXBzZQoKYGBgYmFzaAouL2dy\
+          YWRsZXcgZ2VuRWNsaXBzZVJ1bnMKIyBUaGVuOiBGaWxlIOKGkiBJbXBvcnQg4oaSIEV4aXN0aW5nIEdy\
+          YWRsZSBQcm9qZWN0CmBgYAoKIyMjIEJ1aWxkIHRoZSBKQVIKCmBgYGJhc2gKLi9ncmFkbGV3IGJ1aWxk\
+          CiMgT3V0cHV0OiBidWlsZC9saWJzL2NsaWNrbW9kLTEuMC4wLmphcgpgYGAKCkNvcHkgdGhlIEpBUiBp\
+          bnRvIHlvdXIgYC5taW5lY3JhZnQvbW9kcy9gIGZvbGRlci4KCi0tLQoKIyMgUHJvamVjdCBTdHJ1Y3R1\
+          cmUKCmBgYApjbGlja21vZC8K4pSc4pSA4pSAIGJ1aWxkLmdyYWRsZSAgICAgICAgICAgICAgICAgICAg\
+          ICAgICAgRm9yZ2UgKyBNaXhpbiBidWlsZCBjb25maWcK4pSc4pSA4pSAIGdyYWRsZS5wcm9wZXJ0aWVz\
+          ICAgICAgICAgICAgICAgICAgICAgSlZNIGhlYXAgc2V0dGluZ3MK4pSc4pSA4pSAIHNldHRpbmdzLmdy\
+          YWRsZSAgICAgICAgICAgICAgICAgICAgICAgUmVwbyAmIHBsdWdpbiByZXBvcwrilJzilIDilIAgc3Jj\
+          L21haW4vCuKUgiAgIOKUnOKUgOKUgCBqYXZhL2NvbS9leGFtcGxlL2NsaWNrbW9kLwrilIIgICDilIIg\
+          ICDilJzilIDilIAgQ2xpY2tNb2QuamF2YSAgICAgICAgICAgICAgICAgQE1vZCBlbnRyeSBwb2ludCwg\
+          c291bmQgcmVnaXN0cmF0aW9uCuKUgiAgIOKUgiAgIOKUnOKUgOKUgCBDbGlja01vZENvbmZpZy5qYXZh\
+          ICAgICAgICAgICBGb3JnZSBjb25maWcgc3BlYyAoYWxsIHNldHRpbmdzKQrilIIgICDilIIgICDilJzi\
+          lIDilIAgS2V5QmluZGluZ3MuamF2YSAgICAgICAgICAgICAgVE9HR0xFX0hVRCBrZXkgbWFwcGluZwri\
+          lIIgICDilIIgICDilJzilIDilIAgQ2xpZW50RXZlbnRzLmphdmEgICAgICAgICAgICAgRm9yZ2UgZXZl\
+          bnQgYnVzIChrZXliaW5kIHBvbGxpbmcpCuKUgiAgIOKUgiAgIOKUnOKUgOKUgCBndWkvCuKUgiAgIOKU\
+          giAgIOKUgiAgIOKUlOKUgOKUgCBWb2x1bWVIVUQuamF2YSAgICAgICAgICAgIERyYWdnYWJsZSBIVUQg\
+          b3ZlcmxheSArIHNsaWRlcgrilIIgICDilIIgICDilJTilIDilIAgbWl4aW4vCuKUgiAgIOKUgiAgICAg\
+          ICDilJzilIDilIAgTGlicmFyeUNoYW5uZWxNaXhpbi5qYXZhICDihpAgVW5pdmVyc2FsIGFtcGxpZmll\
+          ciAoT3BlbkFMIGhvb2spCuKUgiAgIOKUgiAgICAgICDilJTilIDilIAgTWluZWNyYWZ0TWl4aW4uamF2\
+          YSAgICAgICDihpAgQ2xpY2sgc291bmQgaW5qZWN0aW9uCuKUgiAgIOKUlOKUgOKUgCByZXNvdXJjZXMv\
+          CuKUgiAgICAgICDilJzilIDilIAgTUVUQS1JTkYvbW9kcy50b21sICAgICAgICAgICAgRm9yZ2UgbW9k\
+          IG1ldGFkYXRhCuKUgiAgICAgICDilJzilIDilIAgTUVUQS1JTkYvYWNjZXNzdHJhbnNmb3JtZXIuY2Zn\
+          IEFUIGZvciBTb3VuZEVuZ2luZSBpbnRlcm5hbHMK4pSCICAgICAgIOKUnOKUgOKUgCBwYWNrLm1jbWV0\
+          YSAgICAgICAgICAgICAgICAgICBSZXNvdXJjZSBwYWNrIGRlc2NyaXB0b3IK4pSCICAgICAgIOKUnOKU\
+          gOKUgCBjbGlja21vZC5taXhpbnMuanNvbiAgICAgICAgICBNaXhpbiBjb25maWcK4pSCICAgICAgIOKU\
+          lOKUgOKUgCBhc3NldHMvY2xpY2ttb2QvCuKUgiAgICAgICAgICAg4pSc4pSA4pSAIHNvdW5kcy5qc29u\
+          ICAgICAgICAgICAgICAgU291bmQgZXZlbnQgZGVmaW5pdGlvbgrilIIgICAgICAgICAgIOKUlOKUgOKU\
+          gCBzb3VuZHMvY2xpY2sub2dnICAgICAgICAgIFlvdXIgY3VzdG9tIGNsaWNrIHNvdW5kCmBgYAoKLS0t\
+          CgojIyBIb3cgaXQgd29ya3MKCiMjIyBDbGljayBzb3VuZHMgKGBNaW5lY3JhZnRNaXhpbmApCkluamVj\
+          dHMgaW50byBgTWluZWNyYWZ0LnN0YXJ0QXR0YWNrKClgIChsZWZ0LWNsaWNrKSBhbmQgYE1pbmVjcmFm\
+          dC5jb250aW51ZUF0dGFjayhmYWxzZSlgIChyaWdodC1jbGljaykuIFRoZXNlIGFyZSB0aGUgbG93ZXN0\
+          LWxldmVsIGlucHV0IGhhbmRsZXJzIGluIE1pbmVjcmFmdCwgY2FsbGVkIGZvciBldmVyeSBjbGljayBh\
+          Y3Rpb24gcmVnYXJkbGVzcyBvZiB3aGF0IHRoZSBwbGF5ZXIgaXMgZG9pbmcg4oCUIGJsb2NrcywgZW50\
+          aXRpZXMsIGl0ZW1zLCBhaXIsIG1vZGRlZCBjb250ZW50LCBldGMuCgojIyMgVW5pdmVyc2FsIGFtcGxp\
+          ZmllciAoYExpYnJhcnlDaGFubmVsTWl4aW5gKQpUYXJnZXRzIGBMaWJyYXJ5JENoYW5uZWwuc2V0Vm9s\
+          dW1lKGZsb2F0KWAg4oCUIHRoZSBzaW5nbGUgbWV0aG9kIHRoYXQgZXZlcnkgc291bmQgaW4gTWluZWNy\
+          YWZ0IGNhbGxzIGJlZm9yZSBzZXR0aW5nIGBBTF9HQUlOYCB2aWEgT3BlbkFMLiBCeSBpbnRlcmNlcHRp\
+          bmcgaGVyZSwgdGhlIG11bHRpcGxpZXIgYXBwbGllcyB0bzoKLSBBbGwgdmFuaWxsYSBzb3VuZHMKLSBB\
+          bGwgcmVzb3VyY2UgcGFjayBzb3VuZHMKLSBBbGwgRm9yZ2UvbW9kIHNvdW5kcyAoY3VycmVudCBhbmQg\
+          ZnV0dXJlKQotIE11c2ljLCBhbWJpZW50LCBVSSwgd2VhdGhlciwgbW9iLCBibG9jaywgaXRlbSBzb3Vu\
+          ZHMKLSBEeW5hbWljYWxseSByZWdpc3RlcmVkIHNvdW5kIGV2ZW50cyBhdCBydW50aW1lCgpObyBjb21w\
+          YXRpYmlsaXR5IHBhdGNoZXMgYXJlIG5lZWRlZCBmb3IgZnV0dXJlIG1vZHMuCgojIyMgQ29uZmlnIGZp\
+          bGUKTG9jYXRlZCBhdCBgLm1pbmVjcmFmdC9jb25maWcvY2xpY2ttb2QtY2xpZW50LnRvbWxgOgoKYGBg\
+          dG9tbApbYXVkaW9dCiAgYW1wbGlmaWVyID0gMS4wICAgICAgICAgICMgMC4w4oCTMTAuMCAoMTAwJSA9\
+          IDEuMCwgMTAwMCUgPSAxMC4wKQogIGxlZnRDbGlja1NvdW5kRW5hYmxlZCA9IHRydWUKICByaWdodENs\
+          aWNrU291bmRFbmFibGVkID0gdHJ1ZQogIGNsaWNrU291bmRWb2x1bWUgPSAxLjAKICBjbGlja1NvdW5k\
+          UGl0Y2ggPSAxLjAKCltodWRdCiAgaHVkVmlzaWJsZSA9IHRydWUKICBodWRYID0gMTAKICBodWRZID0g\
+          MTAKYGBgCgotLS0KCiMjIEluLWdhbWUgVXNhZ2UKCi0gKipUb2dnbGUgSFVEKio6IFByZXNzIGBWYCAo\
+          cmViaW5kYWJsZSBpbiBDb250cm9scyDihpIgQ2xpY2tNb2QpCi0gKipBZGp1c3Qgdm9sdW1lKio6IERy\
+          YWcgdGhlIHJlZCBzbGlkZXIgbGVmdC9yaWdodCAoMCUgdG8gMTAwMCUpCi0gKipNb3ZlIEhVRCoqOiBE\
+          cmFnIHRoZSB0aXRsZSBiYXIgdG8gcmVwb3NpdGlvbgotIFRoZSBhbXBsaWZpZXIgc3RheXMgYWN0aXZl\
+          IGV2ZW4gd2hlbiB0aGUgSFVEIGlzIGhpZGRlbgoKLS0tCgojIyBUcm91Ymxlc2hvb3RpbmcKCnwgUHJv\
+          YmxlbSB8IFNvbHV0aW9uIHwKfC0tLS0tLS0tLXwtLS0tLS0tLS18CnwgYGdyYWRsZS13cmFwcGVyLmph\
+          cmAgbWlzc2luZyB8IFJ1biBgZ3JhZGxlIHdyYXBwZXIgLS1ncmFkbGUtdmVyc2lvbj04LjEuMWAgd2l0\
+          aCBzeXN0ZW0gR3JhZGxlLCBvciBkb3dubG9hZCBmcm9tIGh0dHBzOi8vZ3JhZGxlLm9yZy9yZWxlYXNl\
+          cy8gfAp8IEJ1aWxkIGZhaWxzIHdpdGggYGRlb2JmYCBlcnJvcnMgfCBSdW4gYC4vZ3JhZGxldyAtLXJl\
+          ZnJlc2gtZGVwZW5kZW5jaWVzYCB8CnwgQ2xpY2sgc291bmQgbm90IHBsYXlpbmcgfCBDaGVjayBgY29u\
+          ZmlnL2NsaWNrbW9kLWNsaWVudC50b21sYCDigJQgZW5zdXJlIGBsZWZ0Q2xpY2tTb3VuZEVuYWJsZWQg\
+          PSB0cnVlYCB8CnwgVm9sdW1lIHNsaWRlciBoYXMgbm8gZWZmZWN0IHwgVmVyaWZ5IHRoZSBNaXhpbiB3\
+          YXMgbG9hZGVkOiBsb29rIGZvciBgW2NsaWNrbW9kXWAgaW4gYGxvZ3MvbGF0ZXN0LmxvZ2AgfAo=" | base64 -d > "README.md"
+  
+        - name: Create build.gradle
+          run: |
+            mkdir -p "."
+            echo "cGx1Z2lucyB7CiAgICBpZCAnbmV0Lm1pbmVjcmFmdGZvcmdlLmdyYWRsZScgdmVyc2lvbiAnWzYuMCw2\
+          LjIpJwogICAgaWQgJ29yZy5zcG9uZ2Vwb3dlcmVkLm1peGluJyB2ZXJzaW9uICcwLjcuKycKfQoKdmVy\
+          c2lvbiA9ICcxLjAuMCcKZ3JvdXAgPSAnY29tLmV4YW1wbGUuY2xpY2ttb2QnCmFyY2hpdmVzQmFzZU5h\
+          bWUgPSAnY2xpY2ttb2QnCgpqYXZhLnRvb2xjaGFpbi5sYW5ndWFnZVZlcnNpb24gPSBKYXZhTGFuZ3Vh\
+          Z2VWZXJzaW9uLm9mKDE3KQoKcHJpbnRsbiAiSmF2YTogJHtTeXN0ZW0uZ2V0UHJvcGVydHkgJ2phdmEu\
+          dmVyc2lvbid9LCBKVk06ICR7U3lzdGVtLmdldFByb3BlcnR5ICdqYXZhLnZtLnZlcnNpb24nfSAoJHtT\
+          eXN0ZW0uZ2V0UHJvcGVydHkgJ2phdmEudmVuZG9yJ30pLCBBcmNoOiAke1N5c3RlbS5nZXRQcm9wZXJ0\
+          eSAnb3MuYXJjaCd9IgoKbWluZWNyYWZ0IHsKICAgIG1hcHBpbmdzIGNoYW5uZWw6ICdvZmZpY2lhbCcs\
+          IHZlcnNpb246ICcxLjIwLjEnCgogICAgYWNjZXNzVHJhbnNmb3JtZXIgPSBmaWxlKCdzcmMvbWFpbi9y\
+          ZXNvdXJjZXMvTUVUQS1JTkYvYWNjZXNzdHJhbnNmb3JtZXIuY2ZnJykKCiAgICBydW5zIHsKICAgICAg\
+          ICBjbGllbnQgewogICAgICAgICAgICB3b3JraW5nRGlyZWN0b3J5IHByb2plY3QuZmlsZSgncnVuJykK\
+          ICAgICAgICAgICAgcHJvcGVydHkgJ2ZvcmdlLmxvZ2dpbmcubWFya2VycycsICdSRUdJU1RSSUVTJwog\
+          ICAgICAgICAgICBwcm9wZXJ0eSAnZm9yZ2UubG9nZ2luZy5jb25zb2xlLmxldmVsJywgJ2RlYnVnJwog\
+          ICAgICAgICAgICBwcm9wZXJ0eSAnZm9yZ2UuZW5hYmxlZEdhbWVUZXN0TmFtZXNwYWNlcycsICdjbGlj\
+          a21vZCcKICAgICAgICAgICAgbW9kcyB7CiAgICAgICAgICAgICAgICBjbGlja21vZCB7CiAgICAgICAg\
+          ICAgICAgICAgICAgc291cmNlIHNvdXJjZVNldHMubWFpbgogICAgICAgICAgICAgICAgfQogICAgICAg\
+          ICAgICB9CiAgICAgICAgfQoKICAgICAgICBzZXJ2ZXIgewogICAgICAgICAgICB3b3JraW5nRGlyZWN0\
+          b3J5IHByb2plY3QuZmlsZSgncnVuJykKICAgICAgICAgICAgcHJvcGVydHkgJ2ZvcmdlLmxvZ2dpbmcu\
+          bWFya2VycycsICdSRUdJU1RSSUVTJwogICAgICAgICAgICBwcm9wZXJ0eSAnZm9yZ2UubG9nZ2luZy5j\
+          b25zb2xlLmxldmVsJywgJ2RlYnVnJwogICAgICAgICAgICBwcm9wZXJ0eSAnZm9yZ2UuZW5hYmxlZEdh\
+          bWVUZXN0TmFtZXNwYWNlcycsICdjbGlja21vZCcKICAgICAgICAgICAgbW9kcyB7CiAgICAgICAgICAg\
+          ICAgICBjbGlja21vZCB7CiAgICAgICAgICAgICAgICAgICAgc291cmNlIHNvdXJjZVNldHMubWFpbgog\
+          ICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQp9CgptaXhpbiB7CiAg\
+          ICBhZGQgc291cmNlU2V0cy5tYWluLCAnY2xpY2ttb2QucmVmbWFwLmpzb24nCiAgICBjb25maWcgJ2Ns\
+          aWNrbW9kLm1peGlucy5qc29uJwp9CgpyZXBvc2l0b3JpZXMgewogICAgbWF2ZW5DZW50cmFsKCkKfQoK\
+          ZGVwZW5kZW5jaWVzIHsKICAgIG1pbmVjcmFmdCAnbmV0Lm1pbmVjcmFmdGZvcmdlOmZvcmdlOjEuMjAu\
+          MS00Ny4yLjIwJwogICAgYW5ub3RhdGlvblByb2Nlc3NvciAnb3JnLnNwb25nZXBvd2VyZWQ6bWl4aW46\
+          MC44LjU6cHJvY2Vzc29yJwp9CgpqYXIgewogICAgbWFuaWZlc3QgewogICAgICAgIGF0dHJpYnV0ZXMo\
+          WwogICAgICAgICAgICAnU3BlY2lmaWNhdGlvbi1UaXRsZScgICAgIDogJ2NsaWNrbW9kJywKICAgICAg\
+          ICAgICAgJ1NwZWNpZmljYXRpb24tVmVuZG9yJyAgICA6ICdjbGlja21vZGF1dGhvcicsCiAgICAgICAg\
+          ICAgICdTcGVjaWZpY2F0aW9uLVZlcnNpb24nICAgOiAnMScsCiAgICAgICAgICAgICdJbXBsZW1lbnRh\
+          dGlvbi1UaXRsZScgICAgOiBwcm9qZWN0Lm5hbWUsCiAgICAgICAgICAgICdJbXBsZW1lbnRhdGlvbi1W\
+          ZXJzaW9uJyAgOiBwcm9qZWN0Lmphci5hcmNoaXZlVmVyc2lvbiwKICAgICAgICAgICAgJ0ltcGxlbWVu\
+          dGF0aW9uLVZlbmRvcicgICA6ICdjbGlja21vZGF1dGhvcicsCiAgICAgICAgICAgICdJbXBsZW1lbnRh\
+          dGlvbi1UaW1lc3RhbXAnOiBuZXcgRGF0ZSgpLmZvcm1hdCgieXl5eS1NTS1kZCdUJ0hIOm1tOnNzWiIp\
+          LAogICAgICAgICAgICAnTWl4aW5Db25maWdzJyAgICAgICAgICAgIDogJ2NsaWNrbW9kLm1peGlucy5q\
+          c29uJwogICAgICAgIF0pCiAgICB9Cn0K" | base64 -d > "build.gradle"
+  
+        - name: Create gradle/wrapper/gradle-wrapper.properties
+          run: |
+            mkdir -p "gradle/wrapper"
+            echo "ZGlzdHJpYnV0aW9uQmFzZT1HUkFETEVfVVNFUl9IT01FCmRpc3RyaWJ1dGlvblBhdGg9d3JhcHBlci9k\
+          aXN0cwpkaXN0cmlidXRpb25Vcmw9aHR0cHNcOi8vc2VydmljZXMuZ3JhZGxlLm9yZy9kaXN0cmlidXRp\
+          b25zL2dyYWRsZS04LjEuMS1iaW4uemlwCnppcFN0b3JlQmFzZT1HUkFETEVfVVNFUl9IT01FCnppcFN0\
+          b3JlUGF0aD13cmFwcGVyL2Rpc3RzCg==" | base64 -d > "gradle/wrapper/gradle-wrapper.properties"
+  
+        - name: Create gradle.properties
+          run: |
+            mkdir -p "."
+            echo "b3JnLmdyYWRsZS5qdm1hcmdzPS1YbXgzRwpvcmcuZ3JhZGxlLmRhZW1vbj1mYWxzZQo=" | base64 -d > "gradle.properties"
+  
+        - name: Create gradlew
+          run: |
+            mkdir -p "."
+            echo "IyEvYmluL3NoCiMKIyBHcmFkbGUgc3RhcnQgdXAgc2NyaXB0IGZvciBQT1NJWCBnZW5lcmF0ZWQgYnkg\
+          R3JhZGxlLgoKIyBBdHRlbXB0IHRvIHNldCBBUFBfSE9NRQojIFJlc29sdmUgbGlua3M6ICQwIG1heSBi\
+          ZSBhIGxpbmsKUFJHPSIkMCIKd2hpbGUgWyAtaCAiJFBSRyIgXSA7IGRvCiAgICBscz1gbHMgLWxkICIk\
+          UFJHImAKICAgIGxpbms9YGV4cHIgIiRscyIgOiAnLiotPiBcKC4qXCkkJ2AKICAgIGlmIGV4cHIgIiRs\
+          aW5rIiA6ICcvLionID4gL2Rldi9udWxsOyB0aGVuCiAgICAgICAgUFJHPSIkbGluayIKICAgIGVsc2UK\
+          ICAgICAgICBQUkc9YGRpcm5hbWUgIiRQUkciYCIvJGxpbmsiCiAgICBmaQpkb25lClNBVkVEPSJgcHdk\
+          YCIKY2QgImBkaXJuYW1lIFwiJFBSR1wiYC8iID4vZGV2L251bGwKQVBQX0hPTUU9ImBwd2QgLVBgIgpj\
+          ZCAiJFNBVkVEIiA+L2Rldi9udWxsCgpBUFBfTkFNRT0iR3JhZGxlIgpBUFBfQkFTRV9OQU1FPWBiYXNl\
+          bmFtZSAiJDAiYAoKQ0xBU1NQQVRIPSRBUFBfSE9NRS9ncmFkbGUvd3JhcHBlci9ncmFkbGUtd3JhcHBl\
+          ci5qYXIKCiMgRGV0ZXJtaW5lIHRoZSBKYXZhIGNvbW1hbmQgdG8gdXNlIHRvIHN0YXJ0IHRoZSBKVk0u\
+          CmlmIFsgLW4gIiRKQVZBX0hPTUUiIF0gOyB0aGVuCiAgICBKQVZBQ01EPSIkSkFWQV9IT01FL2Jpbi9q\
+          YXZhIgplbHNlCiAgICBKQVZBQ01EPSJqYXZhIgpmaQoKZXhlYyAiJEpBVkFDTUQiIC1jbGFzc3BhdGgg\
+          IiRDTEFTU1BBVEgiIG9yZy5ncmFkbGUud3JhcHBlci5HcmFkbGVXcmFwcGVyTWFpbiAiJEAiCg==" | base64 -d > "gradlew"
+  
+        - name: Create gradlew.bat
+          run: |
+            mkdir -p "."
+            echo "QHJlbQpAcmVtIEdyYWRsZSBzdGFydHVwIHNjcmlwdCBmb3IgV2luZG93cy4KQHJlbQpAaWYgIiVERUJV\
+          RyUiID09ICIiIEBlY2hvIG9mZgpAcmVtIFNldCBsb2NhbCBzY29wZSBmb3IgdGhlIHZhcmlhYmxlcyB3\
+          aXRoIHdpbmRvd3MgTlQgc2hlbGwKaWYgIiVPUyUiPT0iV2luZG93c19OVCIgc2V0bG9jYWwKCnNldCBE\
+          SVJOQU1FPSV+ZHAwCmlmICIlRElSTkFNRSUiID09ICIiIHNldCBESVJOQU1FPS4Kc2V0IEFQUF9CQVNF\
+          X05BTUU9JX5uMApzZXQgQVBQX0hPTUU9JURJUk5BTUUlCgpzZXQgQ0xBU1NQQVRIPSVBUFBfSE9NRSVc\
+          Z3JhZGxlXHdyYXBwZXJcZ3JhZGxlLXdyYXBwZXIuamFyCgpAcmVtIEZpbmQgamF2YS5leGUKaWYgZGVm\
+          aW5lZCBKQVZBX0hPTUUgZ290byBmaW5kSmF2YUZyb21KYXZhSG9tZQpzZXQgSkFWQV9FWEU9amF2YS5l\
+          eGUKZ290byBleGVjdXRlCgo6ZmluZEphdmFGcm9tSmF2YUhvbWUKc2V0IEpBVkFfSE9NRT0lSkFWQV9I\
+          T01FOiI9JQpzZXQgSkFWQV9FWEU9JUpBVkFfSE9NRSUvYmluL2phdmEuZXhlCgo6ZXhlY3V0ZQoiJUpB\
+          VkFfRVhFJSIgLWNsYXNzcGF0aCAiJUNMQVNTUEFUSCUiIG9yZy5ncmFkbGUud3JhcHBlci5HcmFkbGVX\
+          cmFwcGVyTWFpbiAlKgoKOm9tZWdhCg==" | base64 -d > "gradlew.bat"
+  
+        - name: Create settings.gradle
+          run: |
+            mkdir -p "."
+            echo "cGx1Z2luTWFuYWdlbWVudCB7CiAgICByZXBvc2l0b3JpZXMgewogICAgICAgIGdyYWRsZVBsdWdpblBv\
+          cnRhbCgpCiAgICAgICAgbWF2ZW4geyB1cmwgPSAnaHR0cHM6Ly9tYXZlbi5taW5lY3JhZnRmb3JnZS5u\
+          ZXQnIH0KICAgICAgICBtYXZlbiB7IHVybCA9ICdodHRwczovL3JlcG8uc3BvbmdlcG93ZXJlZC5vcmcv\
+          cmVwb3NpdG9yeS9tYXZlbi1wdWJsaWMvJyB9CiAgICB9Cn0Kcm9vdFByb2plY3QubmFtZSA9ICdjbGlj\
+          a21vZCcK" | base64 -d > "settings.gradle"
+  
+        - name: Create src/main/java/com/example/clickmod/ClickMod.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZDsKCmltcG9ydCBjb20uZXhhbXBsZS5jbGlja21vZC5n\
+          dWkuVm9sdW1lSFVEOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5jbGllbnQuTWluZWNyYWZ0OwppbXBvcnQg\
+          bmV0Lm1pbmVjcmFmdC5yZXNvdXJjZXMuUmVzb3VyY2VMb2NhdGlvbjsKaW1wb3J0IG5ldC5taW5lY3Jh\
+          ZnQuc291bmRzLlNvdW5kRXZlbnQ7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuYXBpLmRpc3RtYXJr\
+          ZXIuRGlzdDsKaW1wb3J0IG5ldC5taW5lY3JhZnRmb3JnZS5jbGllbnQuZXZlbnQuUmVnaXN0ZXJHdWlP\
+          dmVybGF5c0V2ZW50OwppbXBvcnQgbmV0Lm1pbmVjcmFmdGZvcmdlLmNsaWVudC5ldmVudC5SZWdpc3Rl\
+          cktleU1hcHBpbmdzRXZlbnQ7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuY2xpZW50Lmd1aS5vdmVy\
+          bGF5LlZhbmlsbGFHdWlPdmVybGF5OwppbXBvcnQgbmV0Lm1pbmVjcmFmdGZvcmdlLmV2ZW50LkJ1aWxk\
+          Q3JlYXRpdmVNb2RlVGFiQ29udGVudHNFdmVudDsKaW1wb3J0IG5ldC5taW5lY3JhZnRmb3JnZS5ldmVu\
+          dGJ1cy5hcGkuSUV2ZW50QnVzOwppbXBvcnQgbmV0Lm1pbmVjcmFmdGZvcmdlLmV2ZW50YnVzLmFwaS5T\
+          dWJzY3JpYmVFdmVudDsKaW1wb3J0IG5ldC5taW5lY3JhZnRmb3JnZS5mbWwuTW9kTG9hZGluZ0NvbnRl\
+          eHQ7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuZm1sLmNvbW1vbi5Nb2Q7CmltcG9ydCBuZXQubWlu\
+          ZWNyYWZ0Zm9yZ2UuZm1sLmNvbmZpZy5Nb2RDb25maWc7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2Uu\
+          Zm1sLmV2ZW50LmxpZmVjeWNsZS5GTUxDbGllbnRTZXR1cEV2ZW50OwppbXBvcnQgbmV0Lm1pbmVjcmFm\
+          dGZvcmdlLmZtbC5qYXZhZm1sbW9kLkZNTEphdmFNb2RMb2FkaW5nQ29udGV4dDsKaW1wb3J0IG5ldC5t\
+          aW5lY3JhZnRmb3JnZS5yZWdpc3RyaWVzLkRlZmVycmVkUmVnaXN0ZXI7CmltcG9ydCBuZXQubWluZWNy\
+          YWZ0Zm9yZ2UucmVnaXN0cmllcy5Gb3JnZVJlZ2lzdHJpZXM7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9y\
+          Z2UucmVnaXN0cmllcy5SZWdpc3RyeU9iamVjdDsKaW1wb3J0IG9yZy5hcGFjaGUubG9nZ2luZy5sb2c0\
+          ai5Mb2dNYW5hZ2VyOwppbXBvcnQgb3JnLmFwYWNoZS5sb2dnaW5nLmxvZzRqLkxvZ2dlcjsKCkBNb2Qo\
+          Q2xpY2tNb2QuTU9EX0lEKQpwdWJsaWMgY2xhc3MgQ2xpY2tNb2QgewoKICAgIHB1YmxpYyBzdGF0aWMg\
+          ZmluYWwgU3RyaW5nIE1PRF9JRCA9ICJjbGlja21vZCI7CiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIExv\
+          Z2dlciBMT0dHRVIgPSBMb2dNYW5hZ2VyLmdldExvZ2dlcihNT0RfSUQpOwoKICAgIHB1YmxpYyBzdGF0\
+          aWMgZmluYWwgRGVmZXJyZWRSZWdpc3RlcjxTb3VuZEV2ZW50PiBTT1VORF9FVkVOVFMgPQogICAgICAg\
+          ICAgICBEZWZlcnJlZFJlZ2lzdGVyLmNyZWF0ZShGb3JnZVJlZ2lzdHJpZXMuU09VTkRfRVZFTlRTLCBN\
+          T0RfSUQpOwoKICAgIHB1YmxpYyBzdGF0aWMgZmluYWwgUmVnaXN0cnlPYmplY3Q8U291bmRFdmVudD4g\
+          Q0xJQ0tfU09VTkQgPQogICAgICAgICAgICBTT1VORF9FVkVOVFMucmVnaXN0ZXIoImNsaWNrIiwgKCkg\
+          LT4KICAgICAgICAgICAgICAgICAgICBTb3VuZEV2ZW50LmNyZWF0ZVZhcmlhYmxlUmFuZ2VFdmVudChu\
+          ZXcgUmVzb3VyY2VMb2NhdGlvbihNT0RfSUQsICJjbGljayIpKSk7CgogICAgcHVibGljIENsaWNrTW9k\
+          KCkgewogICAgICAgIElFdmVudEJ1cyBtb2RFdmVudEJ1cyA9IEZNTEphdmFNb2RMb2FkaW5nQ29udGV4\
+          dC5nZXQoKS5nZXRNb2RFdmVudEJ1cygpOwoKICAgICAgICBTT1VORF9FVkVOVFMucmVnaXN0ZXIobW9k\
+          RXZlbnRCdXMpOwoKICAgICAgICBNb2RMb2FkaW5nQ29udGV4dC5nZXQoKS5yZWdpc3RlckNvbmZpZyhN\
+          b2RDb25maWcuVHlwZS5DTElFTlQsIENsaWNrTW9kQ29uZmlnLlNQRUMsICJjbGlja21vZC1jbGllbnQu\
+          dG9tbCIpOwoKICAgICAgICBtb2RFdmVudEJ1cy5hZGRMaXN0ZW5lcih0aGlzOjpvbkNsaWVudFNldHVw\
+          KTsKICAgICAgICBtb2RFdmVudEJ1cy5hZGRMaXN0ZW5lcih0aGlzOjpvblJlZ2lzdGVyS2V5TWFwcGlu\
+          Z3MpOwogICAgICAgIG1vZEV2ZW50QnVzLmFkZExpc3RlbmVyKHRoaXM6Om9uUmVnaXN0ZXJPdmVybGF5\
+          cyk7CiAgICB9CgogICAgcHJpdmF0ZSB2b2lkIG9uQ2xpZW50U2V0dXAoRk1MQ2xpZW50U2V0dXBFdmVu\
+          dCBldmVudCkgewogICAgICAgIExPR0dFUi5pbmZvKCJbQ2xpY2tNb2RdIENsaWVudCBzZXR1cCBjb21w\
+          bGV0ZS4gQW1wbGlmaWVyIGFjdGl2ZS4iKTsKICAgIH0KCiAgICBwcml2YXRlIHZvaWQgb25SZWdpc3Rl\
+          cktleU1hcHBpbmdzKFJlZ2lzdGVyS2V5TWFwcGluZ3NFdmVudCBldmVudCkgewogICAgICAgIGV2ZW50\
+          LnJlZ2lzdGVyKEtleUJpbmRpbmdzLlRPR0dMRV9IVUQpOwogICAgfQoKICAgIHByaXZhdGUgdm9pZCBv\
+          blJlZ2lzdGVyT3ZlcmxheXMoUmVnaXN0ZXJHdWlPdmVybGF5c0V2ZW50IGV2ZW50KSB7CiAgICAgICAg\
+          ZXZlbnQucmVnaXN0ZXJBYm92ZUFsbCgidm9sdW1lX2h1ZCIsIFZvbHVtZUhVRC5JTlNUQU5DRSk7CiAg\
+          ICB9Cn0K" | base64 -d > "src/main/java/com/example/clickmod/ClickMod.java"
+  
+        - name: Create src/main/java/com/example/clickmod/ClickModConfig.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZDsKCmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuY29t\
+          bW9uLkZvcmdlQ29uZmlnU3BlYzsKCnB1YmxpYyBjbGFzcyBDbGlja01vZENvbmZpZyB7CgogICAgcHVi\
+          bGljIHN0YXRpYyBmaW5hbCBGb3JnZUNvbmZpZ1NwZWMgU1BFQzsKICAgIHB1YmxpYyBzdGF0aWMgZmlu\
+          YWwgRm9yZ2VDb25maWdTcGVjLkRvdWJsZVZhbHVlIEFNUExJRklFUjsKICAgIHB1YmxpYyBzdGF0aWMg\
+          ZmluYWwgRm9yZ2VDb25maWdTcGVjLkJvb2xlYW5WYWx1ZSBIVURfVklTSUJMRTsKICAgIHB1YmxpYyBz\
+          dGF0aWMgZmluYWwgRm9yZ2VDb25maWdTcGVjLkludFZhbHVlIEhVRF9YOwogICAgcHVibGljIHN0YXRp\
+          YyBmaW5hbCBGb3JnZUNvbmZpZ1NwZWMuSW50VmFsdWUgSFVEX1k7CiAgICBwdWJsaWMgc3RhdGljIGZp\
+          bmFsIEZvcmdlQ29uZmlnU3BlYy5Cb29sZWFuVmFsdWUgTEVGVF9DTElDS19TT1VORF9FTkFCTEVEOwog\
+          ICAgcHVibGljIHN0YXRpYyBmaW5hbCBGb3JnZUNvbmZpZ1NwZWMuQm9vbGVhblZhbHVlIFJJR0hUX0NM\
+          SUNLX1NPVU5EX0VOQUJMRUQ7CiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIEZvcmdlQ29uZmlnU3BlYy5E\
+          b3VibGVWYWx1ZSBDTElDS19TT1VORF9WT0xVTUU7CiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIEZvcmdl\
+          Q29uZmlnU3BlYy5Eb3VibGVWYWx1ZSBDTElDS19TT1VORF9QSVRDSDsKCiAgICBzdGF0aWMgewogICAg\
+          ICAgIEZvcmdlQ29uZmlnU3BlYy5CdWlsZGVyIGJ1aWxkZXIgPSBuZXcgRm9yZ2VDb25maWdTcGVjLkJ1\
+          aWxkZXIoKTsKCiAgICAgICAgYnVpbGRlci5jb21tZW50KCI9PT0gQ2xpY2tNb2QgQ2xpZW50IENvbmZp\
+          Z3VyYXRpb24gPT09IikucHVzaCgiYXVkaW8iKTsKCiAgICAgICAgQU1QTElGSUVSID0gYnVpbGRlcgog\
+          ICAgICAgICAgICAgICAgLmNvbW1lbnQoIkdsb2JhbCB2b2x1bWUgYW1wbGlmaWNhdGlvbiBtdWx0aXBs\
+          aWVyLiAxLjAgPSAxMDAlIChub3JtYWwpLCAxMC4wID0gMTAwMCUgKG1heCkuIikKICAgICAgICAgICAg\
+          ICAgIC5kZWZpbmVJblJhbmdlKCJhbXBsaWZpZXIiLCAxLjAsIDAuMCwgMTAuMCk7CgogICAgICAgIExF\
+          RlRfQ0xJQ0tfU09VTkRfRU5BQkxFRCA9IGJ1aWxkZXIKICAgICAgICAgICAgICAgIC5jb21tZW50KCJQ\
+          bGF5IGN1c3RvbSBjbGljayBzb3VuZCBvbiBsZWZ0LWNsaWNrIChhdHRhY2spLiIpCiAgICAgICAgICAg\
+          ICAgICAuZGVmaW5lKCJsZWZ0Q2xpY2tTb3VuZEVuYWJsZWQiLCB0cnVlKTsKCiAgICAgICAgUklHSFRf\
+          Q0xJQ0tfU09VTkRfRU5BQkxFRCA9IGJ1aWxkZXIKICAgICAgICAgICAgICAgIC5jb21tZW50KCJQbGF5\
+          IGN1c3RvbSBjbGljayBzb3VuZCBvbiByaWdodC1jbGljayAodXNlL2ludGVyYWN0L3BsYWNlKS4iKQog\
+          ICAgICAgICAgICAgICAgLmRlZmluZSgicmlnaHRDbGlja1NvdW5kRW5hYmxlZCIsIHRydWUpOwoKICAg\
+          ICAgICBDTElDS19TT1VORF9WT0xVTUUgPSBidWlsZGVyCiAgICAgICAgICAgICAgICAuY29tbWVudCgi\
+          Vm9sdW1lIG9mIHRoZSBjdXN0b20gY2xpY2sgc291bmQgKDAuMCB0byAxLjAsIGJlZm9yZSBhbXBsaWZp\
+          Y2F0aW9uKS4iKQogICAgICAgICAgICAgICAgLmRlZmluZUluUmFuZ2UoImNsaWNrU291bmRWb2x1bWUi\
+          LCAxLjAsIDAuMCwgMS4wKTsKCiAgICAgICAgQ0xJQ0tfU09VTkRfUElUQ0ggPSBidWlsZGVyCiAgICAg\
+          ICAgICAgICAgICAuY29tbWVudCgiUGl0Y2ggb2YgdGhlIGN1c3RvbSBjbGljayBzb3VuZCAoMC41IHRv\
+          IDIuMCkuIikKICAgICAgICAgICAgICAgIC5kZWZpbmVJblJhbmdlKCJjbGlja1NvdW5kUGl0Y2giLCAx\
+          LjAsIDAuNSwgMi4wKTsKCiAgICAgICAgYnVpbGRlci5wb3AoKS5wdXNoKCJodWQiKTsKCiAgICAgICAg\
+          SFVEX1ZJU0lCTEUgPSBidWlsZGVyCiAgICAgICAgICAgICAgICAuY29tbWVudCgiV2hldGhlciB0aGUg\
+          dm9sdW1lIEhVRCBpcyB2aXNpYmxlLiIpCiAgICAgICAgICAgICAgICAuZGVmaW5lKCJodWRWaXNpYmxl\
+          IiwgdHJ1ZSk7CgogICAgICAgIEhVRF9YID0gYnVpbGRlcgogICAgICAgICAgICAgICAgLmNvbW1lbnQo\
+          IlggcG9zaXRpb24gb2YgdGhlIEhVRCAocGl4ZWxzIGZyb20gbGVmdCBlZGdlKS4iKQogICAgICAgICAg\
+          ICAgICAgLmRlZmluZUluUmFuZ2UoImh1ZFgiLCAxMCwgMCwgNTAwMCk7CgogICAgICAgIEhVRF9ZID0g\
+          YnVpbGRlcgogICAgICAgICAgICAgICAgLmNvbW1lbnQoIlkgcG9zaXRpb24gb2YgdGhlIEhVRCAocGl4\
+          ZWxzIGZyb20gdG9wIGVkZ2UpLiIpCiAgICAgICAgICAgICAgICAuZGVmaW5lSW5SYW5nZSgiaHVkWSIs\
+          IDEwLCAwLCA1MDAwKTsKCiAgICAgICAgYnVpbGRlci5wb3AoKTsKCiAgICAgICAgU1BFQyA9IGJ1aWxk\
+          ZXIuYnVpbGQoKTsKICAgIH0KfQo=" | base64 -d > "src/main/java/com/example/clickmod/ClickModConfig.java"
+  
+        - name: Create src/main/java/com/example/clickmod/ClientEvents.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZDsKCmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuYXBp\
+          LmRpc3RtYXJrZXIuRGlzdDsKaW1wb3J0IG5ldC5taW5lY3JhZnRmb3JnZS5ldmVudC5UaWNrRXZlbnQ7\
+          CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuZXZlbnRidXMuYXBpLlN1YnNjcmliZUV2ZW50OwppbXBv\
+          cnQgbmV0Lm1pbmVjcmFmdGZvcmdlLmZtbC5jb21tb24uTW9kOwoKLyoqCiAqIEZvcmdlIGV2ZW50IGJ1\
+          cyBzdWJzY3JpYmVyIGZvciBub24tTWl4aW4gZXZlbnRzLgogKgogKiBDbGljayBzb3VuZHMgYXJlIGlu\
+          amVjdGVkIGF0IHRoZSBNaXhpbiBsZXZlbCAoTWluZWNyYWZ0TWl4aW4pIGZvcgogKiBtYXhpbXVtIHJl\
+          bGlhYmlsaXR5IGFuZCBjb3ZlcmFnZS4gVGhpcyBjbGFzcyBoYW5kbGVzIHRoZSBIVUQga2V5YmluZAog\
+          KiB0b2dnbGUgd2hpY2ggbXVzdCBydW4gb24gdGhlIEZvcmdlIGV2ZW50IGJ1cy4KICovCkBNb2QuRXZl\
+          bnRCdXNTdWJzY3JpYmVyKG1vZGlkID0gQ2xpY2tNb2QuTU9EX0lELCBidXMgPSBNb2QuRXZlbnRCdXNT\
+          dWJzY3JpYmVyLkJ1cy5GT1JHRSwgdmFsdWUgPSBEaXN0LkNMSUVOVCkKcHVibGljIGNsYXNzIENsaWVu\
+          dEV2ZW50cyB7CgogICAgQFN1YnNjcmliZUV2ZW50CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgb25DbGll\
+          bnRUaWNrKFRpY2tFdmVudC5DbGllbnRUaWNrRXZlbnQgZXZlbnQpIHsKICAgICAgICBpZiAoZXZlbnQu\
+          cGhhc2UgIT0gVGlja0V2ZW50LlBoYXNlLkVORCkgcmV0dXJuOwoKICAgICAgICAvLyBQb2xsIHRoZSBr\
+          ZXliaW5kIGZvciBIVUQgdG9nZ2xlIGVhY2ggdGljawogICAgICAgIHdoaWxlIChLZXlCaW5kaW5ncy5U\
+          T0dHTEVfSFVELmNvbnN1bWVDbGljaygpKSB7CiAgICAgICAgICAgIGJvb2xlYW4gY3VycmVudCA9IENs\
+          aWNrTW9kQ29uZmlnLkhVRF9WSVNJQkxFLmdldCgpOwogICAgICAgICAgICBDbGlja01vZENvbmZpZy5I\
+          VURfVklTSUJMRS5zZXQoIWN1cnJlbnQpOwogICAgICAgICAgICBDbGlja01vZENvbmZpZy5TUEVDLnNh\
+          dmUoKTsKICAgICAgICAgICAgQ2xpY2tNb2QuTE9HR0VSLmluZm8oIltDbGlja01vZF0gSFVEIHRvZ2ds\
+          ZWQ6IHt9IiwgIWN1cnJlbnQpOwogICAgICAgIH0KICAgIH0KfQo=" | base64 -d > "src/main/java/com/example/clickmod/ClientEvents.java"
+  
+        - name: Create src/main/java/com/example/clickmod/KeyBindings.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZDsKCmltcG9ydCBjb20ubW9qYW5nLmJsYXplM2QucGxh\
+          dGZvcm0uSW5wdXRDb25zdGFudHM7CmltcG9ydCBuZXQubWluZWNyYWZ0LmNsaWVudC5LZXlNYXBwaW5n\
+          OwppbXBvcnQgbmV0Lm1pbmVjcmFmdGZvcmdlLmNsaWVudC5zZXR0aW5ncy5LZXlDb25mbGljdENvbnRl\
+          eHQ7CmltcG9ydCBvcmcubHdqZ2wuZ2xmdy5HTEZXOwoKcHVibGljIGNsYXNzIEtleUJpbmRpbmdzIHsK\
+          CiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIEtleU1hcHBpbmcgVE9HR0xFX0hVRCA9IG5ldyBLZXlNYXBw\
+          aW5nKAogICAgICAgICAgICAia2V5LmNsaWNrbW9kLnRvZ2dsZV9odWQiLAogICAgICAgICAgICBLZXlD\
+          b25mbGljdENvbnRleHQuSU5fR0FNRSwKICAgICAgICAgICAgSW5wdXRDb25zdGFudHMuVHlwZS5LRVlT\
+          WU0sCiAgICAgICAgICAgIEdMRlcuR0xGV19LRVlfViwKICAgICAgICAgICAgImtleS5jYXRlZ29yaWVz\
+          LmNsaWNrbW9kIgogICAgKTsKfQo=" | base64 -d > "src/main/java/com/example/clickmod/KeyBindings.java"
+  
+        - name: Create src/main/java/com/example/clickmod/gui/VolumeHUD.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod/gui"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZC5ndWk7CgppbXBvcnQgY29tLmV4YW1wbGUuY2xpY2tt\
+          b2QuQ2xpY2tNb2RDb25maWc7CmltcG9ydCBjb20ubW9qYW5nLmJsYXplM2Quc3lzdGVtcy5SZW5kZXJT\
+          eXN0ZW07CmltcG9ydCBjb20ubW9qYW5nLmJsYXplM2QudmVydGV4Lio7CmltcG9ydCBuZXQubWluZWNy\
+          YWZ0LmNsaWVudC5NaW5lY3JhZnQ7CmltcG9ydCBuZXQubWluZWNyYWZ0LmNsaWVudC5ndWkuRm9udDsK\
+          aW1wb3J0IG5ldC5taW5lY3JhZnQuY2xpZW50Lmd1aS5HdWlHcmFwaGljczsKaW1wb3J0IG5ldC5taW5l\
+          Y3JhZnQuY2xpZW50LnJlbmRlcmVyLkdhbWVSZW5kZXJlcjsKaW1wb3J0IG5ldC5taW5lY3JhZnRmb3Jn\
+          ZS5jbGllbnQuZ3VpLm92ZXJsYXkuRm9yZ2VHdWk7CmltcG9ydCBuZXQubWluZWNyYWZ0Zm9yZ2UuY2xp\
+          ZW50Lmd1aS5vdmVybGF5LklHdWlPdmVybGF5OwppbXBvcnQgb3JnLmx3amdsLmdsZncuR0xGVzsKCi8q\
+          KgogKiBEcmFnZ2FibGUgaW4tZ2FtZSBIVUQgb3ZlcmxheSB3aXRoIGEgcmVhbC10aW1lIHZvbHVtZSBh\
+          bXBsaWZpZXIgc2xpZGVyLgogKgogKiBGZWF0dXJlczoKICogIC0gU2xpZGVyIHJhbmdlIDAlIOKAkyAx\
+          MDAwJSAobXVsdGlwbGllciAwLjAg4oCTIDEwLjApCiAqICAtIE51bWVyaWMgbGFiZWwgc2hvd2luZyBj\
+          dXJyZW50IHBlcmNlbnRhZ2UKICogIC0gRHJhZ2dhYmxlIGJ5IGl0cyB0aXRsZSBiYXIKICogIC0gU2F2\
+          ZWQgdG8gRm9yZ2UgY2xpZW50IGNvbmZpZyBvbiByZWxlYXNlCiAqICAtIFRvZ2dsZWQgdmlhIEtleUJp\
+          bmRpbmdzLlRPR0dMRV9IVUQKICovCnB1YmxpYyBjbGFzcyBWb2x1bWVIVUQgaW1wbGVtZW50cyBJR3Vp\
+          T3ZlcmxheSB7CgogICAgcHVibGljIHN0YXRpYyBmaW5hbCBWb2x1bWVIVUQgSU5TVEFOQ0UgPSBuZXcg\
+          Vm9sdW1lSFVEKCk7CgogICAgLy8gSFVEIGRpbWVuc2lvbnMKICAgIHByaXZhdGUgc3RhdGljIGZpbmFs\
+          IGludCBXSURUSCAgICAgID0gMjAwOwogICAgcHJpdmF0ZSBzdGF0aWMgZmluYWwgaW50IEhFSUdIVCAg\
+          ICAgPSA1ODsKICAgIHByaXZhdGUgc3RhdGljIGZpbmFsIGludCBUSVRMRV9IICAgID0gMTQ7CiAgICBw\
+          cml2YXRlIHN0YXRpYyBmaW5hbCBpbnQgU0xJREVSX0ggICA9IDEwOwogICAgcHJpdmF0ZSBzdGF0aWMg\
+          ZmluYWwgaW50IFBBRERJTkcgICAgPSA4OwogICAgcHJpdmF0ZSBzdGF0aWMgZmluYWwgaW50IFNMSURF\
+          Ul9ZX09GRiA9IFRJVExFX0ggKyAyMDsKCiAgICAvLyBIVUQgcG9zaXRpb24gKHBpeGVscyBmcm9tIHRv\
+          cC1sZWZ0IG9mIHNjcmVlbikKICAgIHByaXZhdGUgaW50IGh1ZFg7CiAgICBwcml2YXRlIGludCBodWRZ\
+          OwoKICAgIC8vIERyYWcgc3RhdGUKICAgIHByaXZhdGUgYm9vbGVhbiBkcmFnZ2luZyAgID0gZmFsc2U7\
+          CiAgICBwcml2YXRlIGludCAgICAgZHJhZ09mZlggICA9IDA7CiAgICBwcml2YXRlIGludCAgICAgZHJh\
+          Z09mZlkgICA9IDA7CgogICAgLy8gU2xpZGVyIGludGVyYWN0aW9uIHN0YXRlCiAgICBwcml2YXRlIGJv\
+          b2xlYW4gc2xpZGVyRHJhZyA9IGZhbHNlOwoKICAgIC8vIENvbG91ciBjb25zdGFudHMgKEFSR0IpCiAg\
+          ICBwcml2YXRlIHN0YXRpYyBmaW5hbCBpbnQgQ09MX0JHICAgICAgICA9IDB4Q0MxYTFhMmU7CiAgICBw\
+          cml2YXRlIHN0YXRpYyBmaW5hbCBpbnQgQ09MX1RJVExFQkFSICA9IDB4RkYxNjIxM2U7CiAgICBwcml2\
+          YXRlIHN0YXRpYyBmaW5hbCBpbnQgQ09MX0JPUkRFUiAgICA9IDB4RkYwZjM0NjA7CiAgICBwcml2YXRl\
+          IHN0YXRpYyBmaW5hbCBpbnQgQ09MX1NMSURFUl9CRyA9IDB4RkYwZjM0NjA7CiAgICBwcml2YXRlIHN0\
+          YXRpYyBmaW5hbCBpbnQgQ09MX1NMSURFUl9GRyA9IDB4RkZlOTQ1NjA7CiAgICBwcml2YXRlIHN0YXRp\
+          YyBmaW5hbCBpbnQgQ09MX0hBTkRMRSAgICA9IDB4RkZmZmZmZmY7CiAgICBwcml2YXRlIHN0YXRpYyBm\
+          aW5hbCBpbnQgQ09MX1RFWFQgICAgICA9IDB4RkZmZmZmZmY7CiAgICBwcml2YXRlIHN0YXRpYyBmaW5h\
+          bCBpbnQgQ09MX1RJVExFICAgICA9IDB4RkZlOTQ1NjA7CgogICAgcHJpdmF0ZSBWb2x1bWVIVUQoKSB7\
+          fQoKICAgIC8qKiBDYWxsZWQgZXZlcnkgZnJhbWUgYnkgdGhlIG92ZXJsYXkgcmVnaXN0cnkuICovCiAg\
+          ICBAT3ZlcnJpZGUKICAgIHB1YmxpYyB2b2lkIHJlbmRlcihGb3JnZUd1aSBndWksIEd1aUdyYXBoaWNz\
+          IGdmeCwgZmxvYXQgcGFydGlhbFRpY2ssIGludCBzY3JlZW5XaWR0aCwgaW50IHNjcmVlbkhlaWdodCkg\
+          ewogICAgICAgIGlmICghQ2xpY2tNb2RDb25maWcuSFVEX1ZJU0lCTEUuZ2V0KCkpIHJldHVybjsKCiAg\
+          ICAgICAgTWluZWNyYWZ0IG1jID0gTWluZWNyYWZ0LmdldEluc3RhbmNlKCk7CiAgICAgICAgaWYgKG1j\
+          LnNjcmVlbiAhPSBudWxsICYmICEobWMuc2NyZWVuIGluc3RhbmNlb2YgbmV0Lm1pbmVjcmFmdC5jbGll\
+          bnQuZ3VpLnNjcmVlbnMuUGF1c2VTY3JlZW4pKSB7CiAgICAgICAgICAgIC8vIERvbid0IHJlbmRlciB3\
+          aGlsZSBpbnZlbnRvcnkvY2hhdC9ldGMgaXMgb3BlbiDigJQgYnV0IGRvIGFsbG93IHBhdXNlIG1lbnUK\
+          ICAgICAgICB9CgogICAgICAgIC8vIFN5bmMgcG9zaXRpb24gZnJvbSBjb25maWcgb24gZmlyc3QgZnJh\
+          bWUgb3Igd2hlbiBubyBkcmFnIGlzIGhhcHBlbmluZwogICAgICAgIGlmICghZHJhZ2dpbmcgJiYgIXNs\
+          aWRlckRyYWcpIHsKICAgICAgICAgICAgaHVkWCA9IENsaWNrTW9kQ29uZmlnLkhVRF9YLmdldCgpOwog\
+          ICAgICAgICAgICBodWRZID0gQ2xpY2tNb2RDb25maWcuSFVEX1kuZ2V0KCk7CiAgICAgICAgfQoKICAg\
+          ICAgICAvLyBDbGFtcCB0byBzY3JlZW4KICAgICAgICBodWRYID0gTWF0aC5tYXgoMCwgTWF0aC5taW4o\
+          aHVkWCwgc2NyZWVuV2lkdGggIC0gV0lEVEgpKTsKICAgICAgICBodWRZID0gTWF0aC5tYXgoMCwgTWF0\
+          aC5taW4oaHVkWSwgc2NyZWVuSGVpZ2h0IC0gSEVJR0hUKSk7CgogICAgICAgIGhhbmRsZUlucHV0KG1j\
+          KTsKCiAgICAgICAgZHJhd1BhbmVsKGdmeCwgbWMuZm9udCk7CiAgICB9CgogICAgLy8g4pSA4pSA4pSA\
+          IFJlbmRlcmluZyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIAKCiAgICBwcml2YXRlIHZvaWQgZHJhd1BhbmVsKEd1aUdyYXBoaWNzIGdmeCwgRm9udCBm\
+          b250KSB7CiAgICAgICAgaW50IHggPSBodWRYLCB5ID0gaHVkWTsKCiAgICAgICAgLy8gQmFja2dyb3Vu\
+          ZAogICAgICAgIGdmeC5maWxsKHgsIHksIHggKyBXSURUSCwgeSArIEhFSUdIVCwgQ09MX0JHKTsKCiAg\
+          ICAgICAgLy8gQm9yZGVyCiAgICAgICAgZ2Z4LmZpbGwoeCwgICAgICAgICAgICAgeSwgICAgICAgICAg\
+          ICAgIHggKyBXSURUSCwgICAgIHkgKyAxLCAgICAgIENPTF9CT1JERVIpOwogICAgICAgIGdmeC5maWxs\
+          KHgsICAgICAgICAgICAgIHkgKyBIRUlHSFQgLSAxLCB4ICsgV0lEVEgsICAgICB5ICsgSEVJR0hULCBD\
+          T0xfQk9SREVSKTsKICAgICAgICBnZnguZmlsbCh4LCAgICAgICAgICAgICB5LCAgICAgICAgICAgICAg\
+          eCArIDEsICAgICAgICAgeSArIEhFSUdIVCwgQ09MX0JPUkRFUik7CiAgICAgICAgZ2Z4LmZpbGwoeCAr\
+          IFdJRFRIIC0gMSwgeSwgICAgICAgICAgICAgIHggKyBXSURUSCwgICAgIHkgKyBIRUlHSFQsIENPTF9C\
+          T1JERVIpOwoKICAgICAgICAvLyBUaXRsZSBiYXIKICAgICAgICBnZnguZmlsbCh4ICsgMSwgeSArIDEs\
+          IHggKyBXSURUSCAtIDEsIHkgKyBUSVRMRV9ILCBDT0xfVElUTEVCQVIpOwogICAgICAgIGdmeC5kcmF3\
+          U3RyaW5nKGZvbnQsICJcdTI2NmEgQ2xpY2tNb2QgVm9sdW1lIiwgeCArIFBBRERJTkcsIHkgKyAzLCBD\
+          T0xfVElUTEUsIGZhbHNlKTsKCiAgICAgICAgLy8gUGVyY2VudGFnZSBsYWJlbAogICAgICAgIGRvdWJs\
+          ZSBhbXAgPSBDbGlja01vZENvbmZpZy5BTVBMSUZJRVIuZ2V0KCk7CiAgICAgICAgaW50IHBjdCAgICA9\
+          IChpbnQpIE1hdGgucm91bmQoYW1wICogMTAwLjApOwogICAgICAgIFN0cmluZyBwY3RTdHIgPSBwY3Qg\
+          KyAiJSI7CiAgICAgICAgZ2Z4LmRyYXdTdHJpbmcoZm9udCwgcGN0U3RyLCB4ICsgV0lEVEggLSBQQURE\
+          SU5HIC0gZm9udC53aWR0aChwY3RTdHIpLCB5ICsgVElUTEVfSCArIDYsIENPTF9URVhULCBmYWxzZSk7\
+          CgogICAgICAgIC8vICJWb2x1bWU6IiBsYWJlbAogICAgICAgIGdmeC5kcmF3U3RyaW5nKGZvbnQsICJW\
+          b2x1bWU6IiwgeCArIFBBRERJTkcsIHkgKyBUSVRMRV9IICsgNiwgQ09MX1RFWFQsIGZhbHNlKTsKCiAg\
+          ICAgICAgLy8gU2xpZGVyIHRyYWNrCiAgICAgICAgaW50IHRyYWNrWCA9IHggKyBQQURESU5HOwogICAg\
+          ICAgIGludCB0cmFja1kgPSB5ICsgU0xJREVSX1lfT0ZGOwogICAgICAgIGludCB0cmFja1cgPSBXSURU\
+          SCAtIFBBRERJTkcgKiAyOwogICAgICAgIGdmeC5maWxsKHRyYWNrWCwgdHJhY2tZLCB0cmFja1ggKyB0\
+          cmFja1csIHRyYWNrWSArIFNMSURFUl9ILCBDT0xfU0xJREVSX0JHKTsKCiAgICAgICAgLy8gU2xpZGVy\
+          IGZpbGwKICAgICAgICBmbG9hdCBmcmFjdGlvbiA9IChmbG9hdCkgKGFtcCAvIDEwLjApOwogICAgICAg\
+          IGludCBmaWxsVyA9IChpbnQpICh0cmFja1cgKiBmcmFjdGlvbik7CiAgICAgICAgZ2Z4LmZpbGwodHJh\
+          Y2tYLCB0cmFja1ksIHRyYWNrWCArIGZpbGxXLCB0cmFja1kgKyBTTElERVJfSCwgQ09MX1NMSURFUl9G\
+          Ryk7CgogICAgICAgIC8vIFNsaWRlciBoYW5kbGUKICAgICAgICBpbnQgaGFuZGxlWCA9IHRyYWNrWCAr\
+          IGZpbGxXIC0gMzsKICAgICAgICBpbnQgaGFuZGxlWSA9IHRyYWNrWSAtIDI7CiAgICAgICAgZ2Z4LmZp\
+          bGwoaGFuZGxlWCwgaGFuZGxlWSwgaGFuZGxlWCArIDYsIGhhbmRsZVkgKyBTTElERVJfSCArIDQsIENP\
+          TF9IQU5ETEUpOwogICAgfQoKICAgIC8vIOKUgOKUgOKUgCBJbnB1dCBoYW5kbGluZyDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCiAgICBwcml2YXRlIHZvaWQgaGFuZGxl\
+          SW5wdXQoTWluZWNyYWZ0IG1jKSB7CiAgICAgICAgbG9uZyB3aW5kb3cgPSBtYy5nZXRXaW5kb3coKS5n\
+          ZXRXaW5kb3coKTsKCiAgICAgICAgZG91YmxlW10gbXggPSBuZXcgZG91YmxlWzFdLCBteSA9IG5ldyBk\
+          b3VibGVbMV07CiAgICAgICAgR0xGVy5nbGZ3R2V0Q3Vyc29yUG9zKHdpbmRvdywgbXgsIG15KTsKICAg\
+          ICAgICBpbnQgbW91c2VYID0gKGludCkgbXhbMF07CiAgICAgICAgaW50IG1vdXNlWSA9IChpbnQpIG15\
+          WzBdOwoKICAgICAgICAvLyBTY2FsZSBjdXJzb3IgdG8gR1VJIGNvb3JkcyAoaGFuZGxlcyBSZXRpbmEg\
+          LyBHVUkgc2NhbGUpCiAgICAgICAgZG91YmxlIHNjYWxlID0gbWMuZ2V0V2luZG93KCkuZ2V0R3VpU2Nh\
+          bGUoKTsKICAgICAgICBpbnQgZ3VpTW91c2VYID0gKGludCkgKG14WzBdIC8gc2NhbGUpOwogICAgICAg\
+          IGludCBndWlNb3VzZVkgPSAoaW50KSAobXlbMF0gLyBzY2FsZSk7CgogICAgICAgIGJvb2xlYW4gbG1i\
+          RG93biA9IEdMRlcuZ2xmd0dldE1vdXNlQnV0dG9uKHdpbmRvdywgR0xGVy5HTEZXX01PVVNFX0JVVFRP\
+          Tl9MRUZUKSA9PSBHTEZXLkdMRldfUFJFU1M7CgogICAgICAgIC8vIOKUgOKUgCBUaXRsZS1iYXIgZHJh\
+          ZyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICAgICAgICBib29sZWFuIG92ZXJU\
+          aXRsZUJhciA9IGd1aU1vdXNlWCA+PSBodWRYICYmIGd1aU1vdXNlWCA8PSBodWRYICsgV0lEVEgKICAg\
+          ICAgICAgICAgICAgICYmIGd1aU1vdXNlWSA+PSBodWRZICYmIGd1aU1vdXNlWSA8PSBodWRZICsgVElU\
+          TEVfSDsKCiAgICAgICAgaWYgKGxtYkRvd24gJiYgb3ZlclRpdGxlQmFyICYmICFzbGlkZXJEcmFnICYm\
+          ICFkcmFnZ2luZykgewogICAgICAgICAgICBkcmFnZ2luZyA9IHRydWU7CiAgICAgICAgICAgIGRyYWdP\
+          ZmZYID0gZ3VpTW91c2VYIC0gaHVkWDsKICAgICAgICAgICAgZHJhZ09mZlkgPSBndWlNb3VzZVkgLSBo\
+          dWRZOwogICAgICAgIH0KCiAgICAgICAgaWYgKGRyYWdnaW5nKSB7CiAgICAgICAgICAgIGlmIChsbWJE\
+          b3duKSB7CiAgICAgICAgICAgICAgICBodWRYID0gZ3VpTW91c2VYIC0gZHJhZ09mZlg7CiAgICAgICAg\
+          ICAgICAgICBodWRZID0gZ3VpTW91c2VZIC0gZHJhZ09mZlk7CiAgICAgICAgICAgIH0gZWxzZSB7CiAg\
+          ICAgICAgICAgICAgICBkcmFnZ2luZyA9IGZhbHNlOwogICAgICAgICAgICAgICAgQ2xpY2tNb2RDb25m\
+          aWcuSFVEX1guc2V0KGh1ZFgpOwogICAgICAgICAgICAgICAgQ2xpY2tNb2RDb25maWcuSFVEX1kuc2V0\
+          KGh1ZFkpOwogICAgICAgICAgICAgICAgQ2xpY2tNb2RDb25maWcuU1BFQy5zYXZlKCk7CiAgICAgICAg\
+          ICAgIH0KICAgICAgICB9CgogICAgICAgIC8vIOKUgOKUgCBTbGlkZXIgZHJhZyDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi\
+          lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKICAgICAgICBpbnQgdHJhY2tYID0gaHVkWCAr\
+          IFBBRERJTkc7CiAgICAgICAgaW50IHRyYWNrWSA9IGh1ZFkgKyBTTElERVJfWV9PRkY7CiAgICAgICAg\
+          aW50IHRyYWNrVyA9IFdJRFRIIC0gUEFERElORyAqIDI7CgogICAgICAgIGJvb2xlYW4gb3ZlclNsaWRl\
+          ciA9IGd1aU1vdXNlWCA+PSB0cmFja1ggLSA0ICYmIGd1aU1vdXNlWCA8PSB0cmFja1ggKyB0cmFja1cg\
+          KyA0CiAgICAgICAgICAgICAgICAmJiBndWlNb3VzZVkgPj0gdHJhY2tZIC0gNCAmJiBndWlNb3VzZVkg\
+          PD0gdHJhY2tZICsgU0xJREVSX0ggKyA0OwoKICAgICAgICBpZiAobG1iRG93biAmJiBvdmVyU2xpZGVy\
+          ICYmICFkcmFnZ2luZyAmJiAhc2xpZGVyRHJhZykgewogICAgICAgICAgICBzbGlkZXJEcmFnID0gdHJ1\
+          ZTsKICAgICAgICB9CgogICAgICAgIGlmIChzbGlkZXJEcmFnKSB7CiAgICAgICAgICAgIGlmIChsbWJE\
+          b3duKSB7CiAgICAgICAgICAgICAgICBmbG9hdCBmcmFjdGlvbiA9IChmbG9hdCkgTWF0aC5tYXgoMCwg\
+          TWF0aC5taW4oMSwKICAgICAgICAgICAgICAgICAgICAgICAgKGRvdWJsZSkgKGd1aU1vdXNlWCAtIHRy\
+          YWNrWCkgLyB0cmFja1cpKTsKICAgICAgICAgICAgICAgIGRvdWJsZSBuZXdBbXAgPSBNYXRoLnJvdW5k\
+          KGZyYWN0aW9uICogMTAuMCAqIDEwMC4wKSAvIDEwMC4wOyAvLyAyZHAKICAgICAgICAgICAgICAgIENs\
+          aWNrTW9kQ29uZmlnLkFNUExJRklFUi5zZXQobmV3QW1wKTsKICAgICAgICAgICAgfSBlbHNlIHsKICAg\
+          ICAgICAgICAgICAgIHNsaWRlckRyYWcgPSBmYWxzZTsKICAgICAgICAgICAgICAgIENsaWNrTW9kQ29u\
+          ZmlnLlNQRUMuc2F2ZSgpOwogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQp9Cg==" | base64 -d > "src/main/java/com/example/clickmod/gui/VolumeHUD.java"
+  
+        - name: Create src/main/java/com/example/clickmod/mixin/LibraryChannelMixin.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod/mixin"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZC5taXhpbjsKCmltcG9ydCBjb20uZXhhbXBsZS5jbGlj\
+          a21vZC5DbGlja01vZENvbmZpZzsKaW1wb3J0IG5ldC5taW5lY3JhZnQuY2xpZW50LnNvdW5kcy5MaWJy\
+          YXJ5OwppbXBvcnQgb3JnLnNwb25nZXBvd2VyZWQuYXNtLm1peGluLk1peGluOwppbXBvcnQgb3JnLnNw\
+          b25nZXBvd2VyZWQuYXNtLm1peGluLmluamVjdGlvbi5BdDsKaW1wb3J0IG9yZy5zcG9uZ2Vwb3dlcmVk\
+          LmFzbS5taXhpbi5pbmplY3Rpb24uTW9kaWZ5QXJnOwoKLyoqCiAqIEludGVyY2VwdHMgdGhlIHJhdyBP\
+          cGVuQUwgZ2FpbiBzZXQgb24gZXZlcnkgc291bmQgY2hhbm5lbC4KICogVGhpcyBpcyB0aGUgbG93ZXN0\
+          LWxldmVsIGhvb2sgYXZhaWxhYmxlIOKAlCBpdCBjYXRjaGVzIEFMTCBhdWRpbzoKICogdmFuaWxsYSwg\
+          cmVzb3VyY2UgcGFja3MsIEZvcmdlIG1vZHMsIGR5bmFtaWNhbGx5IHJlZ2lzdGVyZWQgZXZlbnRzLAog\
+          KiBtdXNpYywgYW1iaWVudCwgVUksIHdlYXRoZXIsIG1vYnMg4oCUIGV2ZXJ5dGhpbmcuCiAqCiAqIFRo\
+          ZSBhbXBsaWZpZXIgbXVsdGlwbGllcyB0aGUgZmluYWwgZ2FpbiBiZWZvcmUgaXQgcmVhY2hlcyBBTDEw\
+          LmFsU291cmNlZiwKICogc28gdGhlcmUgaXMgbm8gY2xhbXAgZnJvbSBNaW5lY3JhZnQncyBvd24gdm9s\
+          dW1lIGNhbGN1bGF0aW9uLgogKi8KQE1peGluKHRhcmdldHMgPSAibmV0Lm1pbmVjcmFmdC5jbGllbnQu\
+          c291bmRzLkxpYnJhcnkkQ2hhbm5lbCIpCnB1YmxpYyBhYnN0cmFjdCBjbGFzcyBMaWJyYXJ5Q2hhbm5l\
+          bE1peGluIHsKCiAgICAvKioKICAgICAqIE11bHRpcGx5IHRoZSB2b2x1bWUgKEFMX0dBSU4pIGJ5IHRo\
+          ZSB1c2VyJ3MgYW1wbGlmaWVyIGZhY3Rvci4KICAgICAqIENhbGxlZCBldmVyeSB0aW1lIE1pbmVjcmFm\
+          dCBzZXRzIHRoZSBnYWluIG9uIGFuIE9wZW5BTCBzb3VyY2UuCiAgICAgKi8KICAgIEBNb2RpZnlBcmco\
+          CiAgICAgICAgICAgIG1ldGhvZCA9ICJzZXRWb2x1bWUoRilWIiwKICAgICAgICAgICAgYXQgPSBAQXQo\
+          CiAgICAgICAgICAgICAgICAgICAgdmFsdWUgPSAiSU5WT0tFIiwKICAgICAgICAgICAgICAgICAgICB0\
+          YXJnZXQgPSAiTG9yZy9sd2pnbC9vcGVuYWwvQUwxMDthbFNvdXJjZWYoSUlGKVYiLAogICAgICAgICAg\
+          ICAgICAgICAgIHJlbWFwID0gZmFsc2UKICAgICAgICAgICAgKSwKICAgICAgICAgICAgaW5kZXggPSAy\
+          CiAgICApCiAgICBwcml2YXRlIGZsb2F0IGFtcGxpZnlWb2x1bWUoZmxvYXQgb3JpZ2luYWxWb2x1bWUp\
+          IHsKICAgICAgICBmbG9hdCBtdWx0aXBsaWVyID0gKGZsb2F0KSAoZG91YmxlKSBDbGlja01vZENvbmZp\
+          Zy5BTVBMSUZJRVIuZ2V0KCk7CiAgICAgICAgcmV0dXJuIG9yaWdpbmFsVm9sdW1lICogbXVsdGlwbGll\
+          cjsKICAgIH0KfQo=" | base64 -d > "src/main/java/com/example/clickmod/mixin/LibraryChannelMixin.java"
+  
+        - name: Create src/main/java/com/example/clickmod/mixin/MinecraftMixin.java
+          run: |
+            mkdir -p "src/main/java/com/example/clickmod/mixin"
+            echo "cGFja2FnZSBjb20uZXhhbXBsZS5jbGlja21vZC5taXhpbjsKCmltcG9ydCBjb20uZXhhbXBsZS5jbGlj\
+          a21vZC5DbGlja01vZDsKaW1wb3J0IGNvbS5leGFtcGxlLmNsaWNrbW9kLkNsaWNrTW9kQ29uZmlnOwpp\
+          bXBvcnQgbmV0Lm1pbmVjcmFmdC5jbGllbnQuTWluZWNyYWZ0OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5j\
+          bGllbnQucGxheWVyLkxvY2FsUGxheWVyOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5jbGllbnQucmVzb3Vy\
+          Y2VzLnNvdW5kcy5TaW1wbGVTb3VuZEluc3RhbmNlOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5jbGllbnQu\
+          cmVzb3VyY2VzLnNvdW5kcy5Tb3VuZEluc3RhbmNlOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5zb3VuZHMu\
+          U291bmRTb3VyY2U7CmltcG9ydCBuZXQubWluZWNyYWZ0LnV0aWwuUmFuZG9tU291cmNlOwppbXBvcnQg\
+          b3JnLnNwb25nZXBvd2VyZWQuYXNtLm1peGluLk1peGluOwppbXBvcnQgb3JnLnNwb25nZXBvd2VyZWQu\
+          YXNtLm1peGluLlNoYWRvdzsKaW1wb3J0IG9yZy5zcG9uZ2Vwb3dlcmVkLmFzbS5taXhpbi5pbmplY3Rp\
+          b24uQXQ7CmltcG9ydCBvcmcuc3BvbmdlcG93ZXJlZC5hc20ubWl4aW4uaW5qZWN0aW9uLkluamVjdDsK\
+          aW1wb3J0IG9yZy5zcG9uZ2Vwb3dlcmVkLmFzbS5taXhpbi5pbmplY3Rpb24uY2FsbGJhY2suQ2FsbGJh\
+          Y2tJbmZvUmV0dXJuYWJsZTsKCi8qKgogKiBJbnRlcmNlcHRzIE1pbmVjcmFmdCdzIGF0dGFjayAobGVm\
+          dC1jbGljaykgYW5kIHVzZS1pdGVtIChyaWdodC1jbGljaykKICogbWV0aG9kcyB0byBwbGF5IHRoZSBj\
+          dXN0b20gY2xpY2sgc291bmQgYmVmb3JlIHZhbmlsbGEgcHJvY2Vzc2luZyBjb250aW51ZXMuCiAqCiAq\
+          IFVzaW5nIE1peGluIGhlcmUgKGluc3RlYWQgb2YgRm9yZ2UgZXZlbnRzIGFsb25lKSBndWFyYW50ZWVz\
+          IHRoZSBzb3VuZCBmaXJlcwogKiBldmVuIGluIGVkZ2UgY2FzZXMgd2hlcmUgRm9yZ2UgaW5wdXQgZXZl\
+          bnRzIG1pZ2h0IGJlIGNvbnN1bWVkIG9yIGNhbmNlbGxlZAogKiBieSBhbm90aGVyIG1vZC4KICovCkBN\
+          aXhpbihNaW5lY3JhZnQuY2xhc3MpCnB1YmxpYyBhYnN0cmFjdCBjbGFzcyBNaW5lY3JhZnRNaXhpbiB7\
+          CgogICAgQFNoYWRvdwogICAgcHVibGljIExvY2FsUGxheWVyIHBsYXllcjsKCiAgICAvKioKICAgICAq\
+          IExlZnQtY2xpY2sgLyBhdHRhY2sgaG9vay4KICAgICAqIHN0YXJ0QXR0YWNrKCkgaXMgY2FsbGVkIG9u\
+          Y2UgcGVyIGNsaWNrLCBub3QgcGVyLXRpY2ssIHNvIGl0IGZpcmVzIGV4YWN0bHkKICAgICAqIHdoZW4g\
+          dGhlIHBsYXllciBhdHRhY2tzIGEgYmxvY2ssIGVudGl0eSwgb3IgZW1wdHkgc3BhY2UuCiAgICAgKi8K\
+          ICAgIEBJbmplY3QobWV0aG9kID0gInN0YXJ0QXR0YWNrKClaIiwgYXQgPSBAQXQoIkhFQUQiKSkKICAg\
+          IHByaXZhdGUgdm9pZCBvblN0YXJ0QXR0YWNrKENhbGxiYWNrSW5mb1JldHVybmFibGU8Qm9vbGVhbj4g\
+          Y2lyKSB7CiAgICAgICAgaWYgKENsaWNrTW9kQ29uZmlnLkxFRlRfQ0xJQ0tfU09VTkRfRU5BQkxFRC5n\
+          ZXQoKSkgewogICAgICAgICAgICBjbGlja21vZCRwbGF5Q2xpY2soKTsKICAgICAgICB9CiAgICB9Cgog\
+          ICAgLyoqCiAgICAgKiBSaWdodC1jbGljayAvIHVzZS1pdGVtIGhvb2suCiAgICAgKiBjb250aW51ZUF0\
+          dGFjayhmYWxzZSkgaXMgaW52b2tlZCBmb3IgdGhlIFVTRSBhY3Rpb24gd2hlbiB0aGUgYnV0dG9uCiAg\
+          ICAgKiBpcyBmaXJzdCBwcmVzc2VkLCBjb3ZlcmluZyBibG9jayBwbGFjZW1lbnQsIGl0ZW0gdXNlLCBh\
+          bmQgZW50aXR5IGludGVyYWN0aW9uLgogICAgICovCiAgICBASW5qZWN0KG1ldGhvZCA9ICJjb250aW51\
+          ZUF0dGFjayhaKVYiLCBhdCA9IEBBdCgiSEVBRCIpKQogICAgcHJpdmF0ZSB2b2lkIG9uQ29udGludWVB\
+          dHRhY2soYm9vbGVhbiBhdHRhY2tpbmcsIG9yZy5zcG9uZ2Vwb3dlcmVkLmFzbS5taXhpbi5pbmplY3Rp\
+          b24uY2FsbGJhY2suQ2FsbGJhY2tJbmZvIGNpKSB7CiAgICAgICAgaWYgKCFhdHRhY2tpbmcgJiYgQ2xp\
+          Y2tNb2RDb25maWcuUklHSFRfQ0xJQ0tfU09VTkRfRU5BQkxFRC5nZXQoKSkgewogICAgICAgICAgICBj\
+          bGlja21vZCRwbGF5Q2xpY2soKTsKICAgICAgICB9CiAgICB9CgogICAgcHJpdmF0ZSB2b2lkIGNsaWNr\
+          bW9kJHBsYXlDbGljaygpIHsKICAgICAgICBpZiAocGxheWVyID09IG51bGwpIHJldHVybjsKICAgICAg\
+          ICBNaW5lY3JhZnQgbWMgPSAoTWluZWNyYWZ0KSAoT2JqZWN0KSB0aGlzOwoKICAgICAgICBmbG9hdCB2\
+          b2x1bWUgPSAoZmxvYXQpIChkb3VibGUpIENsaWNrTW9kQ29uZmlnLkNMSUNLX1NPVU5EX1ZPTFVNRS5n\
+          ZXQoKTsKICAgICAgICBmbG9hdCBwaXRjaCAgPSAoZmxvYXQpIChkb3VibGUpIENsaWNrTW9kQ29uZmln\
+          LkNMSUNLX1NPVU5EX1BJVENILmdldCgpOwoKICAgICAgICBtYy5nZXRTb3VuZE1hbmFnZXIoKS5wbGF5\
+          KAogICAgICAgICAgICAgICAgU2ltcGxlU291bmRJbnN0YW5jZS5mb3JVSSgKICAgICAgICAgICAgICAg\
+          ICAgICAgICAgQ2xpY2tNb2QuQ0xJQ0tfU09VTkQuZ2V0KCksCiAgICAgICAgICAgICAgICAgICAgICAg\
+          IHBpdGNoLAogICAgICAgICAgICAgICAgICAgICAgICB2b2x1bWUKICAgICAgICAgICAgICAgICkKICAg\
+          ICAgICApOwogICAgfQp9Cg==" | base64 -d > "src/main/java/com/example/clickmod/mixin/MinecraftMixin.java"
+  
+        - name: Create src/main/resources/META-INF/accesstransformer.cfg
+          run: |
+            mkdir -p "src/main/resources/META-INF"
+            echo "IyBTb3VuZEVuZ2luZSBpbnRlcm5hbHMgZm9yIGFtcGxpZmljYXRpb24KcHVibGljIG5ldC5taW5lY3Jh\
+          ZnQuY2xpZW50LnNvdW5kcy5Tb3VuZEVuZ2luZSBzb3VuZFN5c3RlbSBMbmV0L21pbmVjcmFmdC9jbGll\
+          bnQvc291bmRzL0xpYnJhcnk7CnB1YmxpYy1mIG5ldC5taW5lY3JhZnQuY2xpZW50LnNvdW5kcy5Tb3Vu\
+          ZEVuZ2luZSBvcHRpb25zIExuZXQvbWluZWNyYWZ0L2NsaWVudC9PcHRpb25zOwo=" | base64 -d > "src/main/resources/META-INF/accesstransformer.cfg"
+  
+        - name: Create src/main/resources/META-INF/mods.toml
+          run: |
+            mkdir -p "src/main/resources/META-INF"
+            echo "bW9kTG9hZGVyPSJqYXZhZm1sIgpsb2FkZXJWZXJzaW9uPSJbNDcsKSIKbGljZW5zZT0iTUlUIgpbW2Rl\
+          cGVuZGVuY2llcy5jbGlja21vZF1dCiAgICBtb2RJZD0iZm9yZ2UiCiAgICBtYW5kYXRvcnk9dHJ1ZQog\
+          ICAgdmVyc2lvblJhbmdlPSJbNDcuMi4yMCwpIgogICAgb3JkZXJpbmc9Ik5PTkUiCiAgICBzaWRlPSJD\
+          TElFTlQiCltbZGVwZW5kZW5jaWVzLmNsaWNrbW9kXV0KICAgIG1vZElkPSJtaW5lY3JhZnQiCiAgICBt\
+          YW5kYXRvcnk9dHJ1ZQogICAgdmVyc2lvblJhbmdlPSJbMS4yMC4xLDEuMjEpIgogICAgb3JkZXJpbmc9\
+          Ik5PTkUiCiAgICBzaWRlPSJDTElFTlQiCgpbW21vZHNdXQptb2RJZD0iY2xpY2ttb2QiCnZlcnNpb249\
+          IjEuMC4wIgpkaXNwbGF5TmFtZT0iQ2xpY2tTb3VuZCAmIFZvbHVtZSBBbXBsaWZpZXIiCmRlc2NyaXB0\
+          aW9uPScnJwpSZXBsYWNlcyBsZWZ0L3JpZ2h0LWNsaWNrIHNvdW5kcyB3aXRoIGEgY3VzdG9tIGNsaWNr\
+          LAphbmQgYWRkcyBhIHVuaXZlcnNhbCB2b2x1bWUgYW1wbGlmaWVyICgw4oCTMTAwMCUpIHdpdGgKYSBk\
+          cmFnZ2FibGUgaW4tZ2FtZSBIVUQgc2xpZGVyLgonJycK" | base64 -d > "src/main/resources/META-INF/mods.toml"
+  
+        - name: Create src/main/resources/assets/clickmod/sounds/click.ogg
+          run: |
+            mkdir -p "src/main/resources/assets/clickmod/sounds"
+            echo "T2dnUwACAAAAAAAAAACLs3FnAAAAAJ/ey9gBHgF2b3JiaXMAAAAAAkSsAAAAAAAAAO4CAAAAAAC4AU9n\
+          Z1MAAAAAAAAAAAAAi7NxZwEAAADG/uTvFP/////P//////////////////9xA3ZvcmJpcw0AAABMYXZm\
+          NjAuMTYuMTAwDQAAAAwAAABsYW5ndWFnZT11bmQZAAAAaGFuZGxlcl9uYW1lPVNvdW5kSGFuZGxlchYA\
+          AAB2ZW5kb3JfaWQ9WzBdWzBdWzBdWzBdHwAAAGVuY29kZXI9TGF2YzYwLjMxLjEwMiBsaWJ2b3JiaXMQ\
+          AAAAbWFqb3JfYnJhbmQ9aXNvbREAAABtaW5vcl92ZXJzaW9uPTUxMiIAAABjb21wYXRpYmxlX2JyYW5k\
+          cz1pc29taXNvMmF2YzFtcDQxBAAAAEh3PTF5AwAATHZNZXRhSW5mbz17ImRhdGEiOnsiYWRzVGVtcGxh\
+          dGVJZCI6IiIsImFwcFZlcnNpb24iOiIxOC4xLjAiLCJidXNpbmVzc0NvbXBvbmVudElkIjoiIiwiYnVz\
+          aW5lc3NUZW1wbGF0ZUlkIjoiIiwiY2FwYWJpbGl0eU5hbWUiOiIiLCJjb21tZXJjaWFsX3BhcmFtcyI6\
+          e30sImRyYWZ0SW5mbyI6eyJ2aWRlb01hdGVyaWFsSWQiOiIxNTExMCJ9LCJlZGl0U291cmNlIjoiIiwi\
+          ZWRpdFR5cGUiOiJlZGl0IiwiZW50ZXJGcm9tIjoibmV3IiwiZXhwb3J0VHlwZSI6ImV4cG9ydCIsImV4\
+          dGVuZFRlbXBsYXRlSWQiOiIiLCJleHRlbmRUZW1wbGF0ZVR5cGUiOjAsImZpbHRlcklkIjoiIiwiZ3Jl\
+          ZW5zY3JlZW5MYXlvdXRUeXBlIjoiIiwiaW5mb1N0aWNrZXJJZCI6IiIsImxhdW5jaE1vZGUiOiJsYXVu\
+          Y2giLCJsYXVuY2hfZW50ZXJfZnJvbSI6ImVudGVyX2xhdW5jaCIsImxvY2tfY250X2xpc3QiOiIiLCJt\
+          b3ZpZTNkVGV4dFRlbXBsYXRlSWQiOiIiLCJvcmlnaW5hbF92b2x1bWUiOjEwMDAsIm9zIjoiYW5kcm9p\
+          ZCIsInByb2R1Y3QiOiJ2aWN1dCIsInJlZ2lvbiI6IkNBIiwic2xvd01vdGlvbiI6Im5vbmUiLCJzb3Vy\
+          Y2VfcGxhdGZvcm0iOiJtb2JpbGVfMiIsInN0aWNrZXJJZCI6IiIsInRlbXBsYXRlSWQiOiIiLCJ0ZXh0\
+          U3BlY2lhbEVmZmVjdCI6IiIsInRoZW1lX3BhcmFtcyI6IltdIiwidHJhbnNmZXJNZXRob2QiOiIiLCJ0\
+          cmFuc2l0aW9ucyI6IiIsInVzZWRfdWdjX3RpbWJyZV9pbmZvIjoie1widGV4dF90b19zcGVlY2hcIjpb\
+          XSxcInZvaWNlX2NvbnZlcnNpb25cIjpbXX0iLCJ2aWRlb0FuaW1hdGlvbiI6IiIsInZpZGVvRWZmZWN0\
+          SWQiOiIiLCJ2aWRlb0lkIjoiZGFlYTVmNWUtYTk2OS00MzE4LThiNTQtZDc5MmE2ZjI4OWYxIn0sInNv\
+          dXJjZV90eXBlIjoidmljdXQifTAAAABhaWdjX2luZm89eyJhaWdjX2xhYmVsX3R5cGUiOjAsInNvdXJj\
+          ZV9pbmZvIjoiIn0QAAAAYml0cmF0ZT0xMjAwMDAwMBAAAABtYXhyYXRlPTMwMDAwMDAwEAAAAHRlX2lz\
+          X3JlZW5jb2RlPTEBBXZvcmJpcytCQ1YBAAgAAAAxTCDFgNCQVQAAEAAAYCQpDpNmSSmllKEoeZiUSEkp\
+          pZTFMImYlInFGGOMMcYYY4wxxhhjjCA0ZBUAAAQAgCgJjqPmSWrOOWcYJ45yoDlpTjinIAeKUeA5CcL1\
+          JmNuprSma27OKSUIDVkFAAACAEBIIYUUUkghhRRiiCGGGGKIIYcccsghp5xyCiqooIIKMsggg0wy6aST\
+          TjrpqKOOOuootNBCCy200kpMMdVWY669Bl18c84555xzzjnnnHPOCUJDVgEAIAAABEIGGWQQQgghhRRS\
+          iCmmmHIKMsiA0JBVAAAgAIAAAAAAR5EUSbEUy7EczdEkT/IsURM10TNFU1RNVVVVVXVdV3Zl13Z113Z9\
+          WZiFW7h9WbiFW9iFXfeFYRiGYRiGYRiGYfh93/d93/d9IDRkFQAgAQCgIzmW4ymiIhqi4jmiA4SGrAIA\
+          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\
+          QBPiIMTRhDia0B0ijBZDA9BivwnaCF0gAg==" | base64 -d > "src/main/resources/assets/clickmod/sounds/click.ogg"
+  
+        - name: Create src/main/resources/assets/clickmod/sounds.json
+          run: |
+            mkdir -p "src/main/resources/assets/clickmod"
+            echo "ewogICJjbGljayI6IHsKICAgICJjYXRlZ29yeSI6ICJtYXN0ZXIiLAogICAgInNvdW5kcyI6IFsKICAg\
+          ICAgewogICAgICAgICJuYW1lIjogImNsaWNrbW9kOmNsaWNrIiwKICAgICAgICAic3RyZWFtIjogZmFs\
+          c2UKICAgICAgfQogICAgXQogIH0KfQo=" | base64 -d > "src/main/resources/assets/clickmod/sounds.json"
+  
+        - name: Create src/main/resources/clickmod.mixins.json
+          run: |
+            mkdir -p "src/main/resources"
+            echo "ewogICJyZXF1aXJlZCI6IHRydWUsCiAgIm1pblZlcnNpb24iOiAiMC44LjUiLAogICJwYWNrYWdlIjog\
+          ImNvbS5leGFtcGxlLmNsaWNrbW9kLm1peGluIiwKICAiY29tcGF0aWJpbGl0eUxldmVsIjogIkpBVkFf\
+          MTciLAogICJyZWZtYXAiOiAiY2xpY2ttb2QucmVmbWFwLmpzb24iLAogICJjbGllbnQiOiBbCiAgICAi\
+          TGlicmFyeUNoYW5uZWxNaXhpbiIsCiAgICAiTWluZWNyYWZ0TWl4aW4iCiAgXSwKICAiaW5qZWN0b3Jz\
+          IjogewogICAgImRlZmF1bHRSZXF1aXJlIjogMQogIH0KfQo=" | base64 -d > "src/main/resources/clickmod.mixins.json"
+  
+        - name: Create src/main/resources/pack.mcmeta
+          run: |
+            mkdir -p "src/main/resources"
+            echo "ewogICJwYWNrIjogewogICAgImRlc2NyaXB0aW9uIjogIkNsaWNrTW9kIFJlc291cmNlcyIsCiAgICAi\
+          cGFja19mb3JtYXQiOiAxNQogIH0KfQo=" | base64 -d > "src/main/resources/pack.mcmeta"
+  
+        - name: Download Gradle wrapper JAR
+          run: |
+            mkdir -p gradle/wrapper
+            curl -L "https://github.com/gradle/gradle/raw/v8.1.1/gradle/wrapper/gradle-wrapper.jar" -o gradle/wrapper/gradle-wrapper.jar
+
+        - name: Cache Gradle
+          uses: actions/cache@v4
+          with:
+            path: |
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+            key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+        - name: Build
+          run: |
+            chmod +x gradlew
+            ./gradlew build --no-daemon
+          env:
+            GRADLE_OPTS: "-Xmx3G"
+
+        - name: Upload JAR
+          uses: actions/upload-artifact@v4
+          with:
+            name: clickmod-1.0.0
+            path: build/libs/clickmod-1.0.0.jar
+            retention-days: 30
+  
